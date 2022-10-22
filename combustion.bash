@@ -1,8 +1,9 @@
 #!/bin/bash
+# combustion: network
 
 echo 'root:HASHchangeME' | chpasswd -e
 
-zypper --non-interactive install podman docker-compose
+zypper --non-interactive install wget podman docker-compose
 
 systemctl disable docker
 systemctl enable podman
@@ -12,7 +13,7 @@ mount /dev/xvdb4 /var
 
 mkdir -p /var/orchestra
 cd /var/orchestra
-wget https://raw.githubusercontent.com/HPPinata/Xen-Orchestra-Install/compose.yml
+wget https://raw.githubusercontent.com/HPPinata/Xen-Orchestra-Install/main/compose.yml
 
 cat <<'EOL' > /var/orchestra/update.bash
 #!/bin/bash
@@ -36,5 +37,6 @@ RemainAfterExit=yes
 
 [Install]
 WantedBy=multi-user.target
+EOL
 
 systemctl enable orchestra-compose
