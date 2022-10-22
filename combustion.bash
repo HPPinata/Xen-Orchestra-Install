@@ -7,7 +7,6 @@ zypper --non-interactive install wget podman docker-compose
 
 systemctl disable podman
 systemctl enable docker
-systemctl enable sshd.service
 
 mount /dev/xvdb4 /var
 
@@ -17,7 +16,8 @@ wget https://raw.githubusercontent.com/HPPinata/Xen-Orchestra-Install/main/compo
 
 cat <<'EOL' > /var/orchestra/update.bash
 #!/bin/bash
-docker-compose down
+cd /var/orchestra
+systemctl restart docker
 docker-compose pull
 docker-compose build --pull
 docker-compose up -dV
