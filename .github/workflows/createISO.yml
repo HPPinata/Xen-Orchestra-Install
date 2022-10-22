@@ -28,10 +28,11 @@ jobs:
         run: |
           sudo apt update && sudo apt install -y genisoimage
           rm -rf disk combustion.iso
-          sed -i "s+HASHchangeME+$6$rQsOnzQxierIvq5f$fcS1uvT4ODaaAYZIOl/86lAHeW7IpDzbmC6sylWnaGB015228mgWi3Z6OUBi9JoU9qMk0R7DESskbNy/upYPb1+g" combustion.bash
+          hashed_password="$(python -c 'import crypt; print(crypt.crypt("changeME"))')"
+          sed -i "s+HASHchangeME+$hashed_password+g" combustion.bash
           mkdir -p disk/combustion
           mv combustion.bash disk/combustion/script
-          mkisofs -o combustion.iso -V combustion disk
+          mkisofs -l -o combustion.iso -V combustion disk
       # Commits updated scripts
       - uses: EndBug/add-and-commit@main
         with:
