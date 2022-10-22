@@ -3,9 +3,12 @@
 echo 'root:HASHchangeME' | chpasswd -e
 
 zypper --non-interactive install podman docker-compose
+
 systemctl disable docker
 systemctl enable podman
 systemctl enable sshd.service
+
+mount /dev/xvdb4 /var
 
 mkdir -p /var/orchestra
 cd /var/orchestra
@@ -33,3 +36,5 @@ RemainAfterExit=yes
 
 [Install]
 WantedBy=multi-user.target
+
+systemctl enable orchestra-compose
