@@ -3,10 +3,10 @@
 
 echo 'root:HASHchangeME' | chpasswd -e
 
-zypper --non-interactive install wget podman #docker-compose
+zypper --non-interactive install wget podman docker-compose
 
-systemctl disable docker
-systemctl enable podman
+systemctl disable podman
+systemctl enable docker
 systemctl enable sshd.service
 
 mount /dev/xvdb4 /var
@@ -24,19 +24,19 @@ docker-compose up -dV
 EOL
 chmod +x /var/orchestra/update.bash
 
-#cat <<'EOL' > /etc/systemd/system/orchestra-compose.service
-#[Unit]
-#Description=Start Xen-Orchestra Container
-#After=network-online.target
-#
-#[Service]
-#Type=oneshot
-#ExecStart=/var/orchestra/update.bash
-#ExecStop=/bin/docker-compose down -f /var/orchestra/compose.yml
-#RemainAfterExit=yes
-#
-#[Install]
-#WantedBy=multi-user.target
-#EOL
+cat <<'EOL' > /etc/systemd/system/orchestra-compose.service
+[Unit]
+Description=Start Xen-Orchestra Container
+After=network-online.target
 
-#systemctl enable orchestra-compose
+[Service]
+Type=oneshot
+ExecStart=/var/orchestra/update.bash
+ExecStop=/bin/docker-compose down -f /var/orchestra/compose.yml
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
+EOL
+
+systemctl enable orchestra-compose
