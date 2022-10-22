@@ -24,19 +24,19 @@ docker-compose up -dV
 EOL
 chmod +x /var/orchestra/update.bash
 
-cat <<'EOL' > /etc/systemd/system/orchestra-compose.service
-[Unit]
-Description=Start Xen-Orchestra Container
-After=network-online.target
+#cat <<'EOL' > /etc/systemd/system/orchestra-compose.service
+#[Unit]
+#Description=Start Xen-Orchestra Container
+#After=network-online.target
+#
+#[Service]
+#Type=oneshot
+#ExecStart=/var/orchestra/update.bash
+#ExecStop=/bin/docker-compose down -f /var/orchestra/compose.yml
+#RemainAfterExit=yes
+#
+#[Install]
+#WantedBy=multi-user.target
+#EOL
 
-[Service]
-Type=oneshot
-ExecStart=/var/orchestra/update.bash
-ExecStop=/bin/docker-compose down -f /var/orchestra/compose.yml
-RemainAfterExit=yes
-
-[Install]
-WantedBy=multi-user.target
-EOL
-
-systemctl enable orchestra-compose
+#systemctl enable orchestra-compose
