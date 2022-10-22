@@ -3,7 +3,7 @@
 
 echo 'root:HASHchangeME' | chpasswd -e
 
-zypper --non-interactive install wget podman docker-compose
+zypper --non-interactive install wget podman #docker-compose
 
 systemctl disable docker
 systemctl enable podman
