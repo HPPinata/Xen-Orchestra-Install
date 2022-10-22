@@ -1,6 +1,6 @@
 #!/bin/bash
 defaultSR=$(xe sr-list name-label="Local storage" | grep uuid | awk -F ': ' {'print $2'})
-defaultNET=$(xe xe network-list bridge=xenbr0 | grep uuid | awk -F ': ' {'print $2'})
+defaultNET=$(xe network-list bridge=xenbr0 | grep uuid | awk -F ': ' {'print $2'})
 
 
 combustion-ISO () {
@@ -33,7 +33,7 @@ create-VM () {
   vmUID=$(xe vm-install new-name-label=test template-name-label="Other install media")
   xe vm-param-set uuid=$vmUID memory-static-max=4294967296 memory-dynamic-max=4294967296 memory-dynamic-min=1073741824 memory-static-min=1073741824
 
-  xe vm-disk-add disk-size=32G device=1 uuid=$vmUID
+  xe vm-disk-add disk-size=32GiB device=1 uuid=$vmUID
   vdiUID=$(xe vm-disk-list uuid=$vmUID | grep -A 1 VDI | grep uuid | awk -F ': ' {'print $2'})
   xe vdi-import uuid=$vdiUID filename=SUSE-MicroOS.raw format=raw
   
