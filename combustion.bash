@@ -2,28 +2,21 @@
 # combustion: network
 echo 'root:HASHchangeME' | chpasswd -e
 
-zypper --non-interactive install wget podman docker-compose
+zypper --non-interactive install wget podman docker-compose lsb-release
 systemctl disable podman
 systemctl enable docker
 
 mount /dev/xvdb4 /var
 
 mount "/dev/disk/by-label/XCP-ng\x20Tools" /mnt
-cp /mnt/Linux/xe-daemon /var/opt
+zypper in --allow-unsigned-rpm /mnt/Linux/*.x86_64.rpm
 
-cat <<'EOL' > /etc/systemd/system/xen-guest-util.service
-[Unit]
-Description=Start Xen-Guest utilities
-After=network-online.target
-
-[Service]
-ExecStart=bash -c '/var/opt/xe-daemon'
-Restart=always
-
-[Install]
-WantedBy=multi-user.target
-EOL
-systemctl enable xen-guest-util
+cp -f /mnt/Linux/xen-vcpu-hotplug.rules /etc/udev/rules.d/
+cp -f /mnt/Linux/xe-linux-distribution.service /etc/systemd/system/
+sed -i 's+share/oem/xs+sbin+g' /etc/systemd/system/xe-linux-distribution.service
+sed -i 's+ /var/cache/xe-linux-distribution++g' /etc/systemd/system/xe-linux-distribution.service
+systemctl daemon-reload
+systemctl enable /etc/systemd/system/xe-linux-distribution
 
 mkdir -p /var/orchestra
 cd /var/orchestra
