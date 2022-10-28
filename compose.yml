@@ -2,7 +2,8 @@ services:
   orchestra:
     image: ezka77/xen-orchestra-ce:latest
     container_name: XO_server
-    privileged: true
+    cap_add:
+      - SYS_ADMIN
     depends_on:
       - redis
     ports:
