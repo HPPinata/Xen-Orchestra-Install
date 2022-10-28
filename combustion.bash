@@ -17,9 +17,8 @@ Description=Start Xen-Guest utilities
 After=network-online.target
 
 [Service]
-Type=oneshot
-ExecStart=/var/opt/xe-daemon
-RemainAfterExit=yes
+ExecStart=bash -c '/var/opt/xe-daemon'
+Restart=always
 
 [Install]
 WantedBy=multi-user.target
@@ -46,8 +45,8 @@ After=network-online.target docker.service
 
 [Service]
 Type=oneshot
-ExecStart=/var/orchestra/update.bash
-ExecStop=/bin/docker-compose down -f /var/orchestra/compose.yml
+ExecStart=bash -c '/var/orchestra/update.bash'
+ExecStop=bash -c '/bin/docker-compose down -f /var/orchestra/compose.yml'
 RemainAfterExit=yes
 
 [Install]
