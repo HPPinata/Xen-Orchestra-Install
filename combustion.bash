@@ -8,7 +8,7 @@ systemctl enable docker
 
 mount /dev/xvdb4 /var
 
-mount "/dev/disk/by-label/XCP-ng\x20Tools" /mnt
+mount /dev/sr1 /mnt
 zypper in --allow-unsigned-rpm /mnt/Linux/*.x86_64.rpm
 
 cp -f /mnt/Linux/xen-vcpu-hotplug.rules /etc/udev/rules.d/
