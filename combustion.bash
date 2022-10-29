@@ -2,8 +2,7 @@
 # combustion: network
 echo 'root:HASHchangeME' | chpasswd -e
 
-zypper --non-interactive install wget podman docker-compose lsb-release
-systemctl disable podman
+zypper --non-interactive install wget docker-compose lsb-release
 systemctl enable docker
 
 mount /dev/xvdb4 /var
