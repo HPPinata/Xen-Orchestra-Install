@@ -1,11 +1,9 @@
 #!/bin/bash
 # combustion: network
-
 echo 'root:HASHchangeME' | chpasswd -e
 
-zypper --non-interactive install wget docker-compose lsb-release
-systemctl enable docker
-
+zypper --non-interactive install wget docker-compose
+systemctl enable --now docker
 mount /dev/xvdb4 /var
 
 
@@ -40,11 +38,18 @@ systemctl enable orchestra-compose
 
 
 mount /dev/sr1 /mnt
-zypper rm -yu xen-tools-domU
-zypper in -y --allow-unsigned-rpm /mnt/Linux/*.x86_64.rpm
+cp /mnt/Linux/xe-daemon /var/opt
 
-cp -f /mnt/Linux/xen-vcpu-hotplug.rules /etc/udev/rules.d/
-cp -f /mnt/Linux/xe-linux-distribution.service /etc/systemd/system/
-sed -i 's+share/oem/xs+sbin+g' /etc/systemd/system/xe-linux-distribution.service
-sed -i 's+ /var/cache/xe-linux-distribution++g' /etc/systemd/system/xe-linux-distribution.service
-systemctl enable xe-linux-distribution
+cat <<'EOL' > /etc/systemd/system/xen-guest-util.service
+[Unit]
+Description=Start Xen-Guest utilities
+After=network-online.target
+
+[Service]
+ExecStart=bash -c '/var/opt/xe-daemon'
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+EOL
+systemctl enable xen-guest-util
