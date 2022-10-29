@@ -38,7 +38,7 @@ systemctl enable orchestra-compose
 
 
 mount /dev/sr1 /mnt
-cp /mnt/Linux/xe-daemon /var/opt
+tar -xf /mnt/Linux/xe-guest-utilities_*_x86_64.tgz
 
 cat <<'EOL' > /etc/systemd/system/xen-guest-util.service
 [Unit]
@@ -46,8 +46,9 @@ Description=Start Xen-Guest utilities
 After=network-online.target
 
 [Service]
-ExecStart=bash -c '/var/opt/xe-daemon'
-Restart=always
+Type=oneshot
+ExecStart=bash -c '/etc/init.d/xe-linux-distribution restart'
+RemainAfterExit=yes
 
 [Install]
 WantedBy=multi-user.target
