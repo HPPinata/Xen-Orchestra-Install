@@ -30,7 +30,7 @@ disk-IMAGE () {
 
 
 create-VM () {
-  vmUID=$(xe vm-install new-name-label=test template-name-label="Other install media")
+  vmUID=$(xe vm-install new-name-label=orchestra template-name-label="Other install media")
   xe vm-param-set uuid=$vmUID memory-static-max=4294967296 memory-dynamic-max=4294967296 memory-dynamic-min=1073741824 memory-static-min=1073741824
 
   xe vm-disk-add disk-size=32GiB device=0 uuid=$vmUID
