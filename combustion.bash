@@ -1,11 +1,13 @@
 #!/bin/bash
 # combustion: network
+
 echo 'root:HASHchangeME' | chpasswd -e
 
 zypper --non-interactive install wget docker-compose lsb-release
 systemctl enable docker
 
 mount /dev/xvdb4 /var
+
 
 mkdir -p /var/orchestra
 cd /var/orchestra
@@ -36,6 +38,7 @@ WantedBy=multi-user.target
 EOL
 systemctl enable orchestra-compose
 
+
 mount /dev/sr1 /mnt
 zypper rm -yu xen-tools-domU
 zypper in -y --allow-unsigned-rpm /mnt/Linux/*.x86_64.rpm
@@ -44,5 +47,4 @@ cp -f /mnt/Linux/xen-vcpu-hotplug.rules /etc/udev/rules.d/
 cp -f /mnt/Linux/xe-linux-distribution.service /etc/systemd/system/
 sed -i 's+share/oem/xs+sbin+g' /etc/systemd/system/xe-linux-distribution.service
 sed -i 's+ /var/cache/xe-linux-distribution++g' /etc/systemd/system/xe-linux-distribution.service
-systemctl daemon-reload
-systemctl enable /etc/systemd/system/xe-linux-distribution
+systemctl enable xe-linux-distribution
