@@ -8,7 +8,8 @@ systemctl enable docker
 mount /dev/xvdb4 /var
 
 mount /dev/sr1 /mnt
-zypper in --allow-unsigned-rpm /mnt/Linux/*.x86_64.rpm
+zypper rm -yu xen-tools-domU
+zypper in -y --allow-unsigned-rpm /mnt/Linux/*.x86_64.rpm
 
 cp -f /mnt/Linux/xen-vcpu-hotplug.rules /etc/udev/rules.d/
 cp -f /mnt/Linux/xe-linux-distribution.service /etc/systemd/system/
