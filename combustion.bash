@@ -1,5 +1,6 @@
 #!/bin/bash
 # combustion: network
+
 echo 'root:HASHchangeME' | chpasswd -e
 
 zypper --non-interactive install wget docker-compose
@@ -14,6 +15,7 @@ wget https://raw.githubusercontent.com/HPPinata/Xen-Orchestra-Install/main/compo
 cat <<'EOL' > /var/orchestra/update.bash
 #!/bin/bash
 cd /var/orchestra
+systemctl restart docker
 docker-compose pull
 docker-compose build --pull
 docker-compose up -dV
@@ -34,23 +36,17 @@ RemainAfterExit=yes
 [Install]
 WantedBy=multi-user.target
 EOL
-systemctl enable orchestra-compose
+systemctl enable /etc/systemd/system/orchestra-compose.service
 
 
 mount /dev/sr1 /mnt
-tar -xf /mnt/Linux/xe-guest-utilities_*_x86_64.tgz
+zypper rm -yu xen-tools-domU
+zypper in -y lsb-release
+zypper in -y --allow-unsigned-rpm /mnt/Linux/*.x86_64.rpm
+pkill -f "xe-daemon"
 
-cat <<'EOL' > /etc/systemd/system/xen-guest-util.service
-[Unit]
-Description=Start Xen-Guest utilities
-After=network-online.target
-
-[Service]
-Type=oneshot
-ExecStart=bash -c '/etc/init.d/xe-linux-distribution restart'
-RemainAfterExit=yes
-
-[Install]
-WantedBy=multi-user.target
-EOL
-systemctl enable xen-guest-util
+cp -f /mnt/Linux/xen-vcpu-hotplug.rules /etc/udev/rules.d/
+cp -f /mnt/Linux/xe-linux-distribution.service /etc/systemd/system/
+sed -i 's+share/oem/xs+sbin+g' /etc/systemd/system/xe-linux-distribution.service
+sed -i 's+ /var/cache/xe-linux-distribution++g' /etc/systemd/system/xe-linux-distribution.service
+systemctl enable /etc/systemd/system/xe-linux-distribution.service
