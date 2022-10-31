@@ -4,7 +4,7 @@
 echo 'root:HASHchangeME' | chpasswd -e
 
 zypper --non-interactive install wget docker-compose
-systemctl enable --now docker
+systemctl enable docker
 mount /dev/xvda4 /var
 
 
