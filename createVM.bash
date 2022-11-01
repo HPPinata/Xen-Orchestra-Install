@@ -53,14 +53,8 @@ create-VM () {
 combustion-ISO
 disk-IMAGE
 create-VM
-
 xe vm-snapshot new-name-label=pre_install new-name-description="Xen-Orchestra management VM pre install" uuid=$vmUID
 xe vm-clone new-name-label=orchestra_clone new-name-description="Xen-Orchestra management VM clone pre install" uuid=$vmUID
-
 xe vm-start uuid=$vmUID
-
-sleep 600
-xe vm-cd-remove cd-name=combustion.iso uuid=$vmUID
-xe vm-cd-remove cd-name=guest-tools.iso uuid=$vmUID
 
 cd .. && rm -rf install-tmp
