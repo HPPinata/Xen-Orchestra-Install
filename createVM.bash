@@ -61,7 +61,7 @@ cleanup () {
   cd .. && rm -rf install-tmp
   
   yum install -y pv --enablerepo epel
-  yes | pv -SpeL1 -s 600 > /dev/null
+  yes | pv -SpeL1 -s 300 > /dev/null
   yum remove -y pv && yum autoremove -y
   
   xe vm-shutdown uuid=$vmUID
