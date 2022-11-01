@@ -41,12 +41,4 @@ systemctl enable /etc/systemd/system/orchestra-compose.service
 
 mount /dev/sr1 /mnt
 zypper rm -yu xen-tools-domU
-zypper in -y lsb-release
-zypper in -y --allow-unsigned-rpm /mnt/Linux/*.x86_64.rpm
-pkill -f "xe-daemon"
-
-cp -f /mnt/Linux/xen-vcpu-hotplug.rules /etc/udev/rules.d/
-cp -f /mnt/Linux/xe-linux-distribution.service /etc/systemd/system/
-sed -i 's+share/oem/xs+sbin+g' /etc/systemd/system/xe-linux-distribution.service
-sed -i 's+ /var/cache/xe-linux-distribution++g' /etc/systemd/system/xe-linux-distribution.service
-systemctl enable /etc/systemd/system/xe-linux-distribution.service
+/mnt/Linux/install.sh -d sles -m 15 -n
