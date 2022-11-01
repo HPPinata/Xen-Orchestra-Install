@@ -11,9 +11,8 @@ cat createVM.bash #look at the things you download
 bash createVM.bash
 ```
 
-Around 2-3 minutes after the script completes the Xen-Orchestra interface should be reachable on the IP address your DHCP server assigned to the VM on port 5050.
-The default credentials are admin@admin.net with password admin. I recommend you to enable autostart for this VM and eject the ISOs
-(so autostart still works for this VM if the tools are updated to a new version on the host later on).
+After the script completes the host reboots, then the Xen-Orchestra interface should be reachable on the IP address
+your DHCP server assigned to the VM on port 5050. The default credentials are admin@admin.net with password admin.
 
 ## Design choices:
 
