@@ -1,4 +1,5 @@
 #!/bin/bash
+
 yum upgrade -y && yum autoremove -y
 mkdir install-tmp
 mv createVM.bash install-tmp
@@ -47,14 +48,33 @@ create-VM () {
   xe vm-cd-add cd-name=guest-tools.iso device=2 uuid=$vmUID
   
   xe vif-create network-uuid=$defaultNET vm-uuid=$vmUID device=5
+  
+  xe vm-snapshot new-name-label=pre_install new-name-description="Xen-Orchestra management VM pre install" uuid=$vmUID
+  xe vm-clone new-name-label=orchestra_clone new-name-description="Xen-Orchestra management VM clone pre install" uuid=$vmUID
+  
+  xe pool-param-set uuid=$(xe pool-list | grep uuid | awk -F ': ' {'print $2'}) other-config:auto_poweron=true
+  xe vm-param-set uuid=$vmUID other-config:auto_poweron=true
+}
+
+
+cleanup () {
+  cd .. && rm -rf install-tmp
+  
+  yum install -y pv --enablerepo epel
+  yes | pv -SpeL1 -s 600 > /dev/null
+  yum remove -y pv && yum autoremove -y
+  
+  xe vm-shutdown uuid=$vmUID
+  xe vm-cd-remove cd-name=combustion.iso uuid=$vmUID
+  xe vm-cd-remove cd-name=guest-tools.iso uuid=$vmUID
 }
 
 
 combustion-ISO
 disk-IMAGE
 create-VM
-xe vm-snapshot new-name-label=pre_install new-name-description="Xen-Orchestra management VM pre install" uuid=$vmUID
-xe vm-clone new-name-label=orchestra_clone new-name-description="Xen-Orchestra management VM clone pre install" uuid=$vmUID
+
 xe vm-start uuid=$vmUID
 
-cd .. && rm -rf install-tmp
+cleanup
+reboot
