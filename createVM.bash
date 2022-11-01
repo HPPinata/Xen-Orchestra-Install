@@ -1,5 +1,5 @@
 #!/bin/bash
-
+yum upgrade -y && yum autoremove -y
 mkdir install-tmp
 mv createVM.bash install-tmp
 cd install-tmp
@@ -21,6 +21,7 @@ combustion-ISO () {
   mv combustion.bash disk/combustion/script
   yum install -y genisoimage
   mkisofs -l -o combustion.iso -V combustion disk
+  yum remove -y genisoimage && yum autoremove -y
   
   cp combustion.iso /var/opt/xen/ISO_Store
   xe sr-scan uuid=$isoSR
@@ -31,6 +32,7 @@ disk-IMAGE () {
   wget https://download.opensuse.org/tumbleweed/appliances/openSUSE-MicroOS.x86_64-kvm-and-xen.qcow2
   yum install -y qemu-img --enablerepo base
   qemu-img convert -O raw openSUSE-MicroOS.x86_64-kvm-and-xen.qcow2 SUSE-MicroOS.raw
+  yum remove -y qemu-img && yum autoremove -y
 }
 
 
@@ -56,5 +58,9 @@ xe vm-snapshot new-name-label=pre_install new-name-description="Xen-Orchestra ma
 xe vm-clone new-name-label=orchestra_clone new-name-description="Xen-Orchestra management VM clone pre install" uuid=$vmUID
 
 xe vm-start uuid=$vmUID
+
+sleep 600
+xe vm-cd-remove cd-name=combustion.iso uuid=$vmUID
+xe vm-cd-remove cd-name=guest-tools.iso uuid=$vmUID
 
 cd .. && rm -rf install-tmp
