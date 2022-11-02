@@ -5,14 +5,14 @@ It creates a VM to run openSUSE MicroOS + docker-compose to use [this image](htt
 
 ## Usage:
 ```
-yum update -y && yum autoremove -y && reboot #update and reboot to get the correct guest-util ISO version
+yum upgrade -y && yum autoremove -y && reboot #update and reboot to get the correct guest-util ISO version
 wget https://raw.githubusercontent.com/HPPinata/Xen-Orchestra-Install/main/createVM.bash
 cat createVM.bash #look at the things you download
 bash createVM.bash
 ```
 
 After the script completes the host reboots, then the Xen-Orchestra interface should be reachable on the IP address
-your DHCP server assigned to the VM on port 5050. The default credentials are admin@admin.net with password admin.
+your DHCP server assigned to the VM on ports 80 and 443. The default credentials are admin@admin.net with password admin.
 
 ## Design choices:
 
