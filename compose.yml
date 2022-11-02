@@ -2,12 +2,12 @@ services:
   orchestra:
     image: ezka77/xen-orchestra-ce:latest
     container_name: XO_server
-    cap_add:
-      - SYS_ADMIN
+    privileged: true
     depends_on:
       - redis
     ports:
-      - 5050:443
+      - 80:80
+      - 443:443
     environment:
       - DEBUG=xo:main
       - NODE_ENV=production
