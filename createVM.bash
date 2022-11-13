@@ -21,10 +21,10 @@ combustion-ISO () {
   mkdir -p disk/combustion
   mv combustion.bash disk/combustion/script
   yum install -y genisoimage
-  mkisofs -l -o combustion.iso -V combustion disk
+  mkisofs -l -o orchestra_combustion.iso -V combustion disk
   yum remove -y genisoimage && yum autoremove -y
   
-  cp combustion.iso /var/opt/xen/ISO_Store
+  cp orchestra_combustion.iso /var/opt/xen/ISO_Store
   xe sr-scan uuid=$isoSR
 }
 
@@ -44,7 +44,7 @@ create-VM () {
   vdiUID=$(xe vm-disk-list uuid=$vmUID | grep -A 1 VDI | grep uuid | awk -F ': ' {'print $2'})
   xe vdi-import uuid=$vdiUID filename=SUSE-MicroOS.raw format=raw
   
-  xe vm-cd-add cd-name=combustion.iso device=1 uuid=$vmUID
+  xe vm-cd-add cd-name=orchestra_combustion.iso device=1 uuid=$vmUID
   xe vm-cd-add cd-name=guest-tools.iso device=2 uuid=$vmUID
   
   xe vif-create network-uuid=$defaultNET vm-uuid=$vmUID device=5
@@ -65,7 +65,7 @@ cleanup () {
   yum remove -y pv && yum autoremove -y
   
   xe vm-shutdown uuid=$vmUID
-  xe vm-cd-remove cd-name=combustion.iso uuid=$vmUID
+  xe vm-cd-remove cd-name=orchestra_combustion.iso uuid=$vmUID
   xe vm-cd-remove cd-name=guest-tools.iso uuid=$vmUID
 }
 
