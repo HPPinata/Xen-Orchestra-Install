@@ -1,11 +1,11 @@
 # Xen-Orchestra-Install
-
 This script was created to spin up a working instance of Xen-Orchestra (community edition) from a newly installed XCP-ng server cli easily.
 It creates a VM to run openSUSE MicroOS + docker-compose to use [this image](https://hub.docker.com/r/ezka77/xen-orchestra-ce).
 
 ## Usage:
 ```
-yum upgrade -y && yum autoremove -y && reboot #update and reboot to get the correct guest-util ISO version
+yum upgrade -y && yum autoremove -y #update to get the correct guest-util ISO version
+/opt/xensource/libexec/xen-cmdline --set-xen dom0_mem=2048M,max:2048M && reboot #set dom0 memory
 wget https://raw.githubusercontent.com/HPPinata/Xen-Orchestra-Install/main/createVM.bash
 cat createVM.bash #look at the things you download
 bash createVM.bash
@@ -15,7 +15,6 @@ After the script completes the host reboots, then the Xen-Orchestra interface sh
 your DHCP server assigned to the VM on ports 80 and 443. The default credentials are admin@admin.net with password admin.
 
 ## Design choices:
-
 My main goals were to give a starting point for easy customisation (not just a baked vhd file) and have the OS be as manitenance free as possible.
 
 I originally considered Fedora CoreOS, but it requires either a hypervisor backchannel, the coreos-installer package (or a working container environment)
