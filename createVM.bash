@@ -15,7 +15,9 @@ combustion-ISO () {
   
   wget https://raw.githubusercontent.com/HPPinata/Xen-Orchestra-Install/main/combustion.bash
   
-  hashed_password="$(python -c 'import crypt; import getpass; print(crypt.crypt(getpass.getpass()))')"
+  while [ -z "$hashed_password" ]; do echo "Password previously unset or input inconsistent."; \
+    hashed_password="$(python -c 'from __future__ import print_function; import crypt; import getpass; \
+    tin = getpass.getpass(); tin2 = getpass.getpass(); print(crypt.crypt(tin)) if (tin == tin2) else ""')"; done
   sed -i "s+HASHchangeME+$hashed_password+g" combustion.bash
   
   mkdir -p disk/combustion
