@@ -2,6 +2,7 @@
 # combustion: network
 
 echo 'root:HASHchangeME' | chpasswd -e
+echo 'orchestra.local' > /etc/hostname
 
 zypper in -y wget docker-compose
 systemctl enable docker
