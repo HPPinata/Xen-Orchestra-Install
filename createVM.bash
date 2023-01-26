@@ -51,7 +51,7 @@ create-VM () {
   xe vm-cd-add cd-name=orchestra_combustion.iso device=1 uuid=$vmUID
   xe vm-cd-add cd-name=guest-tools.iso device=2 uuid=$vmUID
   
-  xe vif-create network-uuid=$defaultNET vm-uuid=$vmUID device=5
+  xe vif-create network-uuid=$defaultNET vm-uuid=$vmUID device=0
   
   xe vm-snapshot new-name-label=orchestra_preinstall new-name-description="Xen-Orchestra management VM pre install" uuid=$vmUID
   xe vm-clone new-name-label=orchestra_clone new-name-description="Xen-Orchestra management VM clone pre install" uuid=$vmUID
