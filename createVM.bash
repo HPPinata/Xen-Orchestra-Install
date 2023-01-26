@@ -42,6 +42,8 @@ disk-IMAGE () {
 create-VM () {
   vmUID=$(xe vm-install new-name-label=orchestra new-name-description="Xen-Orchestra management VM" template-name-label="Other install media")
   xe vm-memory-limits-set static-min=1GiB static-max=4GiB dynamic-min=1GiB dynamic-max=4GiB uuid=$vmUID
+  xe vm-param-set uuid=$vmUID HVM-boot-params:"firmware=uefi"
+  
   xe vm-disk-add disk-size=32GiB device=0 uuid=$vmUID
   vdiUID=$(xe vm-disk-list uuid=$vmUID | grep -A 1 VDI | grep uuid | awk -F ': ' {'print $2'})
   xe vdi-import uuid=$vdiUID filename=SUSE-MicroOS.raw format=raw
