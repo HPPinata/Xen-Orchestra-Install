@@ -3,11 +3,14 @@
 
 echo 'root:HASHchangeME' | chpasswd -e
 echo 'orchestra' > /etc/hostname
+mount /dev/xvda4 /var
+
+mount /dev/sr1 /mnt
+zypper rm -yu xen-tools-domU
+/mnt/Linux/install.sh -d sles -m 15 -n
 
 zypper in -y wget docker-compose
 systemctl enable docker
-mount /dev/xvda4 /var
-
 
 mkdir -p /var/orchestra
 cd /var/orchestra
@@ -38,8 +41,3 @@ RemainAfterExit=yes
 WantedBy=multi-user.target
 EOL
 systemctl enable /etc/systemd/system/orchestra-compose.service
-
-
-mount /dev/sr1 /mnt
-zypper rm -yu xen-tools-domU
-/mnt/Linux/install.sh -d sles -m 15 -n
