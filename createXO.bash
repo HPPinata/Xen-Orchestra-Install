@@ -53,10 +53,10 @@ create-VM () {
   
   xe vif-create network-uuid=$defaultNET vm-uuid=$vmUID device=0
   
-  xe vm-snapshot new-name-label=orchestra_preinstall new-name-description="Xen-Orchestra management VM pre install" uuid=$vmUID
-  
   xe pool-param-set uuid=$(xe pool-list | grep uuid | awk -F ': ' {'print $2'}) other-config:auto_poweron=true
   xe vm-param-set uuid=$vmUID other-config:auto_poweron=true
+  
+  xe vm-snapshot new-name-label=orchestra_preinstall new-name-description="Xen-Orchestra management VM pre install" uuid=$vmUID
 }
 
 
