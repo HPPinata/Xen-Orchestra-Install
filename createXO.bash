@@ -2,7 +2,7 @@
 
 yum upgrade -y && yum autoremove -y
 mkdir install-tmp
-mv createVM.bash install-tmp
+mv createXO.bash install-tmp
 cd install-tmp
 
 defaultSR=$(xe sr-list name-label="Local storage" | grep uuid | awk -F ': ' {'print $2'})
@@ -54,7 +54,6 @@ create-VM () {
   xe vif-create network-uuid=$defaultNET vm-uuid=$vmUID device=0
   
   xe vm-snapshot new-name-label=orchestra_preinstall new-name-description="Xen-Orchestra management VM pre install" uuid=$vmUID
-  xe vm-clone new-name-label=orchestra_clone new-name-description="Xen-Orchestra management VM clone pre install" uuid=$vmUID
   
   xe pool-param-set uuid=$(xe pool-list | grep uuid | awk -F ': ' {'print $2'}) other-config:auto_poweron=true
   xe vm-param-set uuid=$vmUID other-config:auto_poweron=true
