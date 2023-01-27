@@ -7,8 +7,8 @@ It creates a VM to run openSUSE MicroOS + docker-compose to use [this image](htt
 yum upgrade -y && yum autoremove -y #update to get the correct guest-util ISO version
 /opt/xensource/libexec/xen-cmdline --set-xen dom0_mem=2048M,max:2048M && reboot #set dom0 memory
 wget https://raw.githubusercontent.com/HPPinata/Xen-Orchestra-Install/main/createXO.bash
-cat createVM.bash #look at the things you download
-bash createVM.bash
+cat createXO.bash #look at the things you download
+bash createXO.bash
 ```
 
 After the script completes the host reboots, then the Xen-Orchestra interface should be reachable on the IP address
