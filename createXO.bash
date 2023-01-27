@@ -70,6 +70,7 @@ cleanup () {
   xe vm-shutdown uuid=$vmUID
   xe vm-cd-remove cd-name=orchestra_combustion.iso uuid=$vmUID
   xe vm-cd-remove cd-name=guest-tools.iso uuid=$vmUID
+  xe vm-snapshot new-name-label=orchestra_postinstall new-name-description="Xen-Orchestra management VM post install" uuid=$vmUID
 }
 
 
