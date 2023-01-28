@@ -46,6 +46,7 @@ create-VM () {
   
   xe vm-disk-add disk-size=32GiB device=0 uuid=$vmUID
   vdiUID=$(xe vm-disk-list uuid=$vmUID | grep -A 1 VDI | grep uuid | awk -F ': ' {'print $2'})
+  xe vdi-param-set uuid=$vdiUID name-label=orchestra
   xe vdi-import uuid=$vdiUID filename=SUSE-MicroOS.raw format=raw
   
   xe vm-cd-add cd-name=orchestra_combustion.iso device=1 uuid=$vmUID
