@@ -39,6 +39,17 @@ disk-IMAGE () {
 }
 
 
+create-TEMPLATE () {
+  clUID=$(xe vm-clone new-name-label=orchestra_clone new-name-description="Xen-Orchestra management VM clone pre install" uuid=$vmUID)
+  vdiUID=$(xe vm-disk-list uuid=$clUID | grep -A 1 VDI | grep uuid | awk -F ': ' {'print $2'})
+  xe vdi-param-set uuid=$vdiUID name-label=microos
+  
+  snUID=$(xe vm-snapshot new-name-label=orchestra_preinstall new-name-description="Xen-Orchestra management VM clone pre install" uuid=$clUID)
+  xe snapshot-clone new-name-label=MicroOS_Template uuid=$snUID new-name-description="VM Template for an unconfigured MicroOS"
+  xe vm-uninstall uuid=$clUID
+}
+
+
 create-VM () {
   vmUID=$(xe vm-install new-name-label=orchestra new-name-description="Xen-Orchestra management VM" template-name-label="Other install media")
   xe vm-memory-limits-set static-min=1GiB static-max=2GiB dynamic-min=1GiB dynamic-max=2GiB uuid=$vmUID
@@ -51,19 +62,15 @@ create-VM () {
   xe vdi-param-set uuid=$vdiUID name-label=orchestra
   xe vdi-import uuid=$vdiUID filename=SUSE-MicroOS.raw format=raw
   
+  create-TEMPLATE
+  
   xe vm-cd-add cd-name=orchestra_combustion.iso device=1 uuid=$vmUID
   xe vm-cd-add cd-name=guest-tools.iso device=2 uuid=$vmUID
-    
-  snUID=$(xe vm-snapshot new-name-label=orchestra_preinstall new-name-description="Xen-Orchestra management VM pre install" uuid=$vmUID)
-  tpUID=$(xe snapshot-clone new-name-label=MicroOS_Template uuid=$snUID new-name-description="VM Template for an unconfigured MicroOS")
-  
-  vdiUID=$(xe vm-disk-list uuid=$tpUID | grep -A 1 VDI | grep uuid | awk -F ': ' {'print $2'})
-  xe vdi-param-set uuid=$vdiUID name-label=microos
-  xe vm-cd-remove cd-name=orchestra_combustion.iso uuid=$tpUID
-  xe vm-cd-remove cd-name=guest-tools.iso uuid=$tpUID
   
   xe pool-param-set uuid=$(xe pool-list | grep uuid | awk -F ': ' {'print $2'}) other-config:auto_poweron=true
   xe vm-param-set uuid=$vmUID other-config:auto_poweron=true
+  
+  xe vm-snapshot new-name-label=orchestra_preinstall new-name-description="Xen-Orchestra management VM pre install" uuid=$vmUID
 }
 
 
