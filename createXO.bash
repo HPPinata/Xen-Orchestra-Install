@@ -44,9 +44,6 @@ create-VM () {
   xe vm-memory-limits-set static-min=1GiB static-max=2GiB dynamic-min=1GiB dynamic-max=2GiB uuid=$vmUID
   xe vm-param-set uuid=$vmUID HVM-boot-params:firmware=uefi
   
-  xe pool-param-set uuid=$(xe pool-list | grep uuid | awk -F ': ' {'print $2'}) other-config:auto_poweron=true
-  xe vm-param-set uuid=$vmUID other-config:auto_poweron=true
-  
   xe vif-create network-uuid=$defaultNET vm-uuid=$vmUID device=0
   
   xe vm-disk-add disk-size=24GiB device=0 uuid=$vmUID
@@ -64,6 +61,9 @@ create-VM () {
   xe vdi-param-set uuid=$vdiUID name-label=microos
   xe vm-cd-remove cd-name=orchestra_combustion.iso uuid=$tpUID
   xe vm-cd-remove cd-name=guest-tools.iso uuid=$tpUID
+  
+  xe pool-param-set uuid=$(xe pool-list | grep uuid | awk -F ': ' {'print $2'}) other-config:auto_poweron=true
+  xe vm-param-set uuid=$vmUID other-config:auto_poweron=true
 }
 
 
