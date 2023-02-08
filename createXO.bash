@@ -59,6 +59,9 @@ create-VM () {
     
   snUID=$(xe vm-snapshot new-name-label=orchestra_preinstall new-name-description="Xen-Orchestra management VM pre install" uuid=$vmUID)
   tpUID=$(xe snapshot-clone new-name-label=MicroOS_Template uuid=$snUID new-name-description="VM Template for an unconfigured MicroOS")
+  
+  vdiUID=$(xe vm-disk-list uuid=$tpUID | grep -A 1 VDI | grep uuid | awk -F ': ' {'print $2'})
+  xe vdi-param-set uuid=$vdiUID name-label=microos
   xe vm-cd-remove cd-name=orchestra_combustion.iso uuid=$tpUID
   xe vm-cd-remove cd-name=guest-tools.iso uuid=$tpUID
 }
