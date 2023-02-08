@@ -41,23 +41,26 @@ disk-IMAGE () {
 
 create-VM () {
   vmUID=$(xe vm-install new-name-label=orchestra new-name-description="Xen-Orchestra management VM" template-name-label="Other install media")
-  xe vm-memory-limits-set static-min=1GiB static-max=4GiB dynamic-min=1GiB dynamic-max=4GiB uuid=$vmUID
-  xe vm-param-set uuid=$vmUID HVM-boot-params:"firmware=uefi"
+  xe vm-memory-limits-set static-min=1GiB static-max=2GiB dynamic-min=1GiB dynamic-max=2GiB uuid=$vmUID
+  xe vm-param-set uuid=$vmUID HVM-boot-params:firmware=uefi
   
-  xe vm-disk-add disk-size=32GiB device=0 uuid=$vmUID
+  xe pool-param-set uuid=$(xe pool-list | grep uuid | awk -F ': ' {'print $2'}) other-config:auto_poweron=true
+  xe vm-param-set uuid=$vmUID other-config:auto_poweron=true
+  
+  xe vif-create network-uuid=$defaultNET vm-uuid=$vmUID device=0
+  
+  xe vm-disk-add disk-size=24GiB device=0 uuid=$vmUID
   vdiUID=$(xe vm-disk-list uuid=$vmUID | grep -A 1 VDI | grep uuid | awk -F ': ' {'print $2'})
   xe vdi-param-set uuid=$vdiUID name-label=orchestra
   xe vdi-import uuid=$vdiUID filename=SUSE-MicroOS.raw format=raw
   
   xe vm-cd-add cd-name=orchestra_combustion.iso device=1 uuid=$vmUID
   xe vm-cd-add cd-name=guest-tools.iso device=2 uuid=$vmUID
-  
-  xe vif-create network-uuid=$defaultNET vm-uuid=$vmUID device=0
-  
-  xe pool-param-set uuid=$(xe pool-list | grep uuid | awk -F ': ' {'print $2'}) other-config:auto_poweron=true
-  xe vm-param-set uuid=$vmUID other-config:auto_poweron=true
-  
-  xe vm-snapshot new-name-label=orchestra_preinstall new-name-description="Xen-Orchestra management VM pre install" uuid=$vmUID
+    
+  snUID=$(xe vm-snapshot new-name-label=orchestra_preinstall new-name-description="Xen-Orchestra management VM pre install" uuid=$vmUID)
+  tpUID=$(xe snapshot-clone new-name-label=MicroOS_Template uuid=$snUID new-name-description="VM Template for an unconfigured MicroOS")
+  xe vm-cd-remove cd-name=orchestra_combustion.iso uuid=$tpUID
+  xe vm-cd-remove cd-name=guest-tools.iso uuid=$tpUID
 }
 
 
