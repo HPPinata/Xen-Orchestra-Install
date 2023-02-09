@@ -34,7 +34,9 @@ combustion-ISO () {
 disk-IMAGE () {
   wget https://download.opensuse.org/tumbleweed/appliances/openSUSE-MicroOS.x86_64-kvm-and-xen.qcow2
   yum install -y qemu-img --enablerepo base
-  qemu-img convert -O raw openSUSE-MicroOS.x86_64-kvm-and-xen.qcow2 SUSE-MicroOS.raw
+  qemu-img convert -O vpc openSUSE-MicroOS.x86_64-kvm-and-xen.qcow2 SUSE-MicroOS.vhd
+  vhd-util repair -n SUSE-MicroOS.vhd
+  vhd-util check -n SUSE-MicroOS.vhd
   yum remove -y qemu-img && yum autoremove -y
 }
 
@@ -60,7 +62,7 @@ create-VM () {
   xe vm-disk-add disk-size=24GiB device=0 uuid=$vmUID
   vdiUID=$(xe vm-disk-list uuid=$vmUID | grep -A 1 VDI | grep uuid | awk -F ': ' {'print $2'})
   xe vdi-param-set uuid=$vdiUID name-label=orchestra
-  xe vdi-import uuid=$vdiUID filename=SUSE-MicroOS.raw format=raw
+  xe vdi-import uuid=$vdiUID filename=SUSE-MicroOS.vhd --progress
   
   create-TEMPLATE
   
