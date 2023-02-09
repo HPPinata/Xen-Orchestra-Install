@@ -3,6 +3,7 @@
 
 echo 'root:HASHchangeME' | chpasswd -e
 echo 'orchestra' > /etc/hostname
+
 mount /dev/xvda4 /var
 
 mount /dev/sr1 /mnt
