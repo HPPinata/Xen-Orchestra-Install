@@ -33,6 +33,7 @@ jobs:
           mkdir -p disk/combustion
           mv combustion.bash disk/combustion/script
           mkisofs -l -o combustion.iso -V combustion disk
+      
       # Commits updated scripts
       - uses: EndBug/add-and-commit@main
         with:
