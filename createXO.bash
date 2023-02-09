@@ -48,7 +48,7 @@ create-TEMPLATE () {
   
   snUID=$(xe vm-snapshot new-name-label=orchestra_preinstall new-name-description="Xen-Orchestra management VM clone pre install" uuid=$clUID)
   xe snapshot-clone new-name-label=MicroOS_Template uuid=$snUID new-name-description="VM Template for an unconfigured MicroOS"
-  xe vm-uninstall uuid=$clUID
+  xe vm-uninstall uuid=$clUID force=true
 }
 
 
