@@ -3,7 +3,6 @@
 
 echo 'root:HASHchangeME' | chpasswd -e
 echo 'orchestra' > /etc/hostname
-
 mount /dev/xvda4 /var
 
 mount /dev/sr1 /mnt
@@ -15,6 +14,7 @@ systemctl enable docker
 
 mkdir -p /var/orchestra
 cd /var/orchestra
+
 wget https://raw.githubusercontent.com/HPPinata/Xen-Orchestra-Install/main/compose.yml
 
 cat <<'EOL' > /var/orchestra/update.bash
