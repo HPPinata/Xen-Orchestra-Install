@@ -9,6 +9,8 @@ mount /dev/sr1 /mnt
 zypper rm -yu xen-tools-domU
 /mnt/Linux/install.sh -d sles -m 15 -n
 
+echo 'PermitRootLogin yes' > /etc/ssh/sshd_config.d/root.conf
+
 zypper in -y wget docker-compose
 systemctl enable docker
 
