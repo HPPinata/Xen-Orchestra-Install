@@ -20,10 +20,10 @@ wget https://raw.githubusercontent.com/HPPinata/Xen-Orchestra-Install/main/compo
 cat <<'EOL' > /var/orchestra/update.bash
 #!/bin/bash
 cd /var/orchestra
-systemctl restart docker
 docker-compose pull
 docker-compose build --pull
 docker-compose up -dV
+docker system prune -a -f --volumes
 EOL
 chmod +x /var/orchestra/update.bash
 
