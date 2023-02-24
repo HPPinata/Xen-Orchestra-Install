@@ -11,12 +11,18 @@ zypper rm -yu xen-tools-domU
 
 echo 'PermitRootLogin yes' > /etc/ssh/sshd_config.d/root.conf
 
-zypper in -y wget docker-compose
+zypper in -y docker-compose wget zram-generator
 systemctl enable docker
+
+cat <<'EOL' > /etc/systemd/zram-generator.conf
+[zram0]
+
+zram-size = ram
+compression-algorithm = zstd
+EOL
 
 mkdir -p /var/orchestra
 cd /var/orchestra
-
 wget https://raw.githubusercontent.com/HPPinata/Xen-Orchestra-Install/main/compose.yml
 
 cat <<'EOL' > /var/orchestra/update.bash
