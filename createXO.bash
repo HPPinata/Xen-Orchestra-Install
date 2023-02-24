@@ -59,7 +59,7 @@ create-VM () {
   
   xe vif-create network-uuid=$defaultNET vm-uuid=$vmUID device=0
   
-  xe vm-disk-add disk-size=24GiB device=0 uuid=$vmUID
+  xe vm-disk-add disk-size=25GiB device=0 uuid=$vmUID
   vdiUID=$(xe vm-disk-list uuid=$vmUID | grep -A 1 VDI | grep uuid | awk -F ': ' {'print $2'})
   xe vdi-param-set uuid=$vdiUID name-label=orchestra
   xe vdi-import uuid=$vdiUID filename=SUSE-MicroOS.vhd format=vhd --progress
