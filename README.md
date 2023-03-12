@@ -4,7 +4,7 @@ It creates a VM to run openSUSE MicroOS + docker-compose to use [this image](htt
 
 ## Usage:
 ```
-yum upgrade -y && yum autoremove -y #update to get the correct guest-util ISO version
+until yum upgrade -y && yum autoremove -y; do sleep 5; done #update to get the correct guest-util ISO version
 /opt/xensource/libexec/xen-cmdline --set-xen dom0_mem=2048M,max:2048M && reboot #set dom0 memory
 wget https://raw.githubusercontent.com/HPPinata/Xen-Orchestra-Install/main/createXO.bash
 cat createXO.bash #look at the things you download
