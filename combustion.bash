@@ -11,7 +11,7 @@ zypper rm -yu xen-tools-domU
 
 echo 'PermitRootLogin yes' > /etc/ssh/sshd_config.d/root.conf
 
-zypper in -y docker-compose wget zram-generator
+zypper in -y checkpolicy docker-compose wget zram-generator
 systemctl enable docker
 
 cat <<'EOL' > /etc/systemd/zram-generator.conf
