@@ -21,6 +21,11 @@ zram-size = ram
 compression-algorithm = zstd
 EOL
 
+wget https://raw.githubusercontent.com/HPPinata/Notizen/main/selinux/xen_shutdown.te
+checkmodule -M -m -o shutdown.mod shutdown.te
+semodule_package -o shutdown.pp -m shutdown.mod
+semodule -i shutdown.pp
+
 mkdir -p /var/orchestra
 cd /var/orchestra
 wget https://raw.githubusercontent.com/HPPinata/Xen-Orchestra-Install/main/compose.yml
