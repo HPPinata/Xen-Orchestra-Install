@@ -25,7 +25,7 @@ checkmodule -M -m -o xen_shutdown.mod xen_shutdown.te
 semodule_package -o xen_shutdown.pp -m xen_shutdown.mod
 semodule -i xen_shutdown.pp
 
-mkdir -p /var/orchestra
+mkdir /var/orchestra
 cd /var/orchestra
 wget https://raw.githubusercontent.com/HPPinata/Xen-Orchestra-Install/main/compose.yml
 
