@@ -4,13 +4,14 @@
 echo 'root:HASHchangeME' | chpasswd -e
 echo 'orchestra' > /etc/hostname
 echo 'PermitRootLogin yes' > /etc/ssh/sshd_config.d/root.conf
-mount /dev/xvda4 /var
 
+mount /dev/xvda4 /var
 mount /dev/sr1 /mnt
+
 zypper rm -yu xen-tools-domU
 /mnt/Linux/install.sh -d sles -m 15 -n
 
-zypper in -y checkpolicy docker-compose wget zram-generator
+zypper in -y docker-compose wget zram-generator
 systemctl enable docker
 
 cat <<'EOL' > /etc/systemd/zram-generator.conf
@@ -20,10 +21,7 @@ zram-size = ram
 compression-algorithm = zstd
 EOL
 
-wget https://raw.githubusercontent.com/HPPinata/Notizen/main/selinux/xen_shutdown.te
-checkmodule -M -m -o xen_shutdown.mod xen_shutdown.te
-semodule_package -o xen_shutdown.pp -m xen_shutdown.mod
-semodule -i xen_shutdown.pp
+sed -i "s+SELINUX=enforcing+SELINUX=permissive+g" /etc/selinux/config
 
 mkdir /var/orchestra
 cd /var/orchestra
