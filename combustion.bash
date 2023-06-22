@@ -5,7 +5,7 @@ echo 'root:HASHchangeME' | chpasswd -e
 echo 'orchestra' > /etc/hostname
 echo 'PermitRootLogin yes' > /etc/ssh/sshd_config.d/root.conf
 
-mount /dev/xvda4 /var
+mount -o subvol=@/var /dev/xvda3 /var
 mount /dev/sr1 /mnt
 
 zypper rm -yu xen-tools-domU
