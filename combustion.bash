@@ -5,6 +5,8 @@ echo 'root:HASHchangeME' | chpasswd -e
 echo 'orchestra' > /etc/hostname
 echo 'PermitRootLogin yes' > /etc/ssh/sshd_config.d/root.conf
 
+growpart /dev/vda 3
+btrfs filesystem resize max /
 mount -o subvol=@/var /dev/xvda3 /var
 mount /dev/sr1 /mnt
 
