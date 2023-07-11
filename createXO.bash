@@ -89,7 +89,6 @@ cleanup () {
   xe vm-snapshot new-name-label=orchestra_postinstall new-name-description="Xen-Orchestra management VM post install" uuid=$vmUID
 }
 
-
 combustion-ISO
 disk-IMAGE
 create-VM
