@@ -13,7 +13,7 @@ mount /dev/sr1 /mnt
 zypper rm -yu xen-tools-domU
 /mnt/Linux/install.sh -d sles -m 15 -n
 
-zypper in -y docker-compose wget zram-generator
+zypper in -y docker-compose curl zram-generator
 systemctl enable docker
 
 cat <<'EOL' > /etc/systemd/zram-generator.conf
@@ -27,7 +27,7 @@ sed -i "s+SELINUX=enforcing+SELINUX=permissive+g" /etc/selinux/config
 
 mkdir /var/orchestra
 cd /var/orchestra
-wget https://raw.githubusercontent.com/HPPinata/Xen-Orchestra-Install/main/compose.yml
+curl -O https://raw.githubusercontent.com/HPPinata/Xen-Orchestra-Install/main/compose.yml
 
 cat <<'EOL' > /var/orchestra/update.bash
 #!/bin/bash

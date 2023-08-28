@@ -13,7 +13,7 @@ combustion-ISO () {
   mkdir -p /var/opt/xen/ISO_Store
   isoSR=$(xe sr-create name-label=LocalISO type=iso device-config:location=/var/opt/xen/ISO_Store device-config:legacy_mode=true content-type=iso)
   
-  wget https://raw.githubusercontent.com/HPPinata/Xen-Orchestra-Install/main/combustion.bash
+  curl -O https://raw.githubusercontent.com/HPPinata/Xen-Orchestra-Install/main/combustion.bash
   
   while [ -z "$hashed_password" ]; do echo "Password previously unset or input inconsistent."; \
     hashed_password="$(python3 -c 'import crypt; import getpass; \
@@ -32,7 +32,7 @@ combustion-ISO () {
 
 
 disk-IMAGE () {
-  wget https://download.opensuse.org/tumbleweed/appliances/openSUSE-MicroOS.x86_64-kvm-and-xen.qcow2
+  curl -O https://download.opensuse.org/tumbleweed/appliances/openSUSE-MicroOS.x86_64-kvm-and-xen.qcow2
   until yum install -y qemu-img --enablerepo base; do sleep 5; done
   qemu-img convert -O vpc openSUSE-MicroOS.x86_64-kvm-and-xen.qcow2 SUSE-MicroOS.vhd
   vhd-util repair -n SUSE-MicroOS.vhd
