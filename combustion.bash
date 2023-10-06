@@ -2,8 +2,9 @@
 # combustion: network
 
 echo 'root:HASHchangeME' | chpasswd -e
+useradd admin
+echo 'admin:HASHchangeME' | chpasswd -e
 echo 'orchestra' > /etc/hostname
-echo 'PermitRootLogin yes' > /etc/ssh/sshd_config.d/root.conf
 
 growpart /dev/vda 3
 btrfs filesystem resize max /
