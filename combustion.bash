@@ -14,7 +14,7 @@ mount /dev/sr1 /mnt
 zypper rm -yu xen-tools-domU
 /mnt/Linux/install.sh -d sles -m 15 -n
 
-zypper in -y cron curl docker zram-generator
+zypper in -y cron curl docker-compose zram-generator
 systemctl enable docker
 
 cat <<'EOL' > /etc/systemd/zram-generator.conf
