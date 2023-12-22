@@ -15,7 +15,7 @@ After the script completes the host reboots, then the Xen-Orchestra interface sh
 your DHCP server assigned to the VM (or via the hostname "orchestra") on ports 80 and 443. The default credentials are admin@admin.net with password admin.
 
 ## Design choices:
-My main goals were to give a starting point for easy customisation (not just a baked vhd file) and have the OS be as manitenance free as possible.
+My main goals were to give a starting point for easy customisation (not just a baked vhd file) and have the OS be as maintenance free as possible.
 
 I originally considered Fedora CoreOS, but it requires either a hypervisor backchannel, the coreos-installer package or a working container environment
 to embed the configuration file into the install ISO. (I really tried to do it with standard tools: unpack-repack with genisoimage, in place update with xorriso,
