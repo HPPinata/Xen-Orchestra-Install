@@ -8,9 +8,8 @@ mount -o subvol=@/home /dev/xvda3 /home
 mount /dev/sr1 /mnt
 
 echo 'root:HASHchangeME' | chpasswd -e
-useradd admin
-echo 'admin:HASHchangeME' | chpasswd -e
 echo 'orchestra' > /etc/hostname
+echo 'PermitRootLogin yes' > /etc/ssh/sshd_config.d/root.conf
 
 zypper rm -yu xen-tools-domU
 /mnt/Linux/install.sh -d sles -m 15 -n
