@@ -1,6 +1,6 @@
 #!/bin/bash
 
-until yum upgrade -y && yum autoremove -y; do sleep 5; done
+yum upgrade -y && yum autoremove -y
 mkdir install-tmp
 mv createXO.bash install-tmp
 cd install-tmp
@@ -22,7 +22,7 @@ combustion-ISO () {
   
   mkdir -p disk/combustion
   mv combustion.bash disk/combustion/script
-  until yum install -y genisoimage; do sleep 5; done
+  yum install -y genisoimage
   mkisofs -l -o orchestra_combustion.iso -V combustion disk
   yum remove -y genisoimage && yum autoremove -y
   
@@ -33,7 +33,7 @@ combustion-ISO () {
 
 disk-IMAGE () {
   curl -O https://download.opensuse.org/tumbleweed/appliances/openSUSE-MicroOS.x86_64-kvm-and-xen.qcow2
-  until yum install -y qemu-img --enablerepo base; do sleep 5; done
+  yum install -y qemu-img --enablerepo base
   qemu-img convert -O vpc openSUSE-MicroOS.x86_64-kvm-and-xen.qcow2 SUSE-MicroOS.vhd
   vhd-util repair -n SUSE-MicroOS.vhd
   vhd-util check -n SUSE-MicroOS.vhd
@@ -79,7 +79,7 @@ create-VM () {
 cleanup () {
   cd .. && rm -rf install-tmp
   
-  until yum install -y pv --enablerepo epel; do sleep 5; done
+  yum install -y pv --enablerepo epel
   yes | pv -SpeL1 -s 300 > /dev/null
   yum remove -y pv && yum autoremove -y
   
