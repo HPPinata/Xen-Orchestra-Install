@@ -32,7 +32,7 @@ combustion-ISO () {
 
 
 disk-IMAGE () {
-  curl -O https://download.opensuse.org/tumbleweed/appliances/openSUSE-MicroOS.x86_64-kvm-and-xen.qcow2
+  curl -OL https://download.opensuse.org/tumbleweed/appliances/openSUSE-MicroOS.x86_64-kvm-and-xen.qcow2
   yum install -y qemu-img --enablerepo base
   qemu-img convert -O vpc openSUSE-MicroOS.x86_64-kvm-and-xen.qcow2 SUSE-MicroOS.vhd
   vhd-util repair -n SUSE-MicroOS.vhd
